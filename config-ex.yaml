@@ -1,0 +1,10 @@
+student_email: ${mail}
+postgres_cluster:
+  hosts:
+  - address: {DB_CLUSTER}
+    port: 5432
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
+  db_name: ${DB}
+  ssl_mode: verify-full
+  use_closest_node: false
