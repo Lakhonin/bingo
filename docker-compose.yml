@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  bingo:
+    image: registry.gitlab.com/lakhonin/bingo/bingo:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 50M
+    restart: always
+    healthcheck:
+      test: curl --fail -s http://localhost:27352/ping
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 6
+    ports:
+      - "80:27352"
+    networks:
+      - bingo-network
+    volumes:
+      - /etc/config.yaml:/opt/bingo/config.yaml:ro
+  init-bingo:
+    image: registry.gitlab.com/lakhonin/bingo/bingo:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 50M
+    restart: always
+    healthcheck:
+      test: curl --fail -s http://localhost:27352/ping
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 6
+    ports:
+      - "80:27352"
+    networks:
+      - bingo-network
+  
+networks:
+  bingo-network:
+    driver: bridge
